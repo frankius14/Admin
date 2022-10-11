@@ -1,0 +1,17 @@
+<ul #chat>
+  <li *ngFor="let message of chatMessages" (click)="showData($event, message, op)" [class.teamChat]="message.Channel == 1" [class.adminChat]="message.Channel == 2" [class.hide]="message.Channel == 1 && !showTeamMessages" (contextmenu)="ctxSelect(message, $event)">
+    <span class="time">[{{message.Time * 1000  | date:'d/M/yy, h:mm'}}]</span>
+    <img [src]="getAvatar(message.UserId)" class="avatar"/>
+    <span class="username" [style.color]="message.Color">{{message.Username}}</span>
+    {{message.Message}}
+  </li>
+</ul>
+<p-overlayPanel #op>
+  <ng-template pTemplate>
+      Channel:
+      <span *ngIf="clickedMessage.Channel == 0">Global Chat</span>
+      <span *ngIf="clickedMessage.Channel > 0">Team Chat ({{clickedMessage.Channel}})</span><br />
+      SteamID: {{clickedMessage.UserId}}
+  </ng-template>
+</p-overlayPanel>
+<p-contextMenu [target]="chat" [model]="ctxMenu"></p-contextMenu>
